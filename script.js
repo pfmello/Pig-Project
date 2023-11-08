@@ -1,6 +1,15 @@
 'use strict';
 
-const dice = document.querySelector('.dice');
+// Selecionando elementos
+const score0Element = document.getElementById('score--0');
+const score1Element = document.getElementById('score--1');
+const diceElement = document.querySelector('.dice');
+
+// Condições de início de jogo
+score0Element.textContent = 0;
+score1Element.textContent = 0;
+diceElement.classList.add('hidden');
+
 const btnDiceRoll = document.querySelector('.btn--roll');
 
 const player0 = document.querySelector('.player--0');
@@ -28,6 +37,7 @@ const changePlayer = function () {
 };
 
 const diceRoll = function () {
+  diceElement.classList.remove('hidden');
   let diceNumber = Math.floor(Math.random() * 6) + 1;
 
   switch (diceNumber) {
@@ -35,7 +45,7 @@ const diceRoll = function () {
       currentPlayer.points = 0;
       currentPlayer.querySelector('.current-score').textContent =
         currentPlayer.points;
-      dice.src = 'dice-1.png';
+      diceElement.src = 'dice-1.png';
       changePlayer();
 
       break;
@@ -43,19 +53,19 @@ const diceRoll = function () {
       currentPlayer.points += 2;
       currentPlayer.querySelector('.current-score').textContent =
         currentPlayer.points;
-      dice.src = 'dice-2.png';
+      diceElement.src = 'dice-2.png';
       break;
     case 3:
-      dice.src = 'dice-3.png';
+      diceElement.src = 'dice-3.png';
       break;
     case 4:
-      dice.src = 'dice-4.png';
+      diceElement.src = 'dice-4.png';
       break;
     case 5:
-      dice.src = 'dice-5.png';
+      diceElement.src = 'dice-5.png';
       break;
     case 6:
-      dice.src = 'dice-6.png';
+      diceElement.src = 'dice-6.png';
       break;
     default:
       break;
