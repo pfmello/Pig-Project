@@ -23,10 +23,10 @@ const player1 = document.querySelector('.player--1');
 player0.currentScore = 0;
 player1.currentScore = 0;
 
-player0.score = 0;
-player1.score = 0;
+player0.score = player1.score = 0;
 
-let victoryScore = 20;
+// Pontos necessários para a vitória
+let victoryScore = 100;
 
 // Variável que controla o estado do jogo
 let gameActive = true;
