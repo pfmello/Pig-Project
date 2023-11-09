@@ -15,21 +15,30 @@ score0Element.textContent = 0;
 score1Element.textContent = 0;
 diceElement.classList.add('hidden');
 
+// Selecionando Players
 const player0 = document.querySelector('.player--0');
 const player1 = document.querySelector('.player--1');
 
+// Pontuação inicial dos players, através de propriedades
 player0.currentScore = 0;
 player1.currentScore = 0;
-
-let currentScore = 0;
 
 player0.score = 0;
 player1.score = 0;
 
+let victoryScore = 20;
+
+// Variável que controla o estado do jogo
+let gameActive = true;
+
+// Variável que controla o player ativo
 let activePlayer = player0;
 
-const changePlayer = function () {
+const switchPlayer = function () {
   activePlayer.classList.toggle('player--active');
+
+  activePlayer.querySelector('.current-score').textContent =
+    activePlayer.currentScore;
 
   activePlayer =
     activePlayer === player0
@@ -40,8 +49,11 @@ const changePlayer = function () {
 };
 
 btnDiceRoll.addEventListener('click', function () {
+  // Se o jogo não estiver ativo, nenhum código executa após o return !
+  if (!gameActive) return;
+
   // Gerando o número do dado
-  const diceNumber = Math.trunc(Math.random() * 6) + 1;
+  const diceNumber = Math.floor(Math.random() * 6) + 1;
 
   // Mostrando o dado na tela
   diceElement.classList.remove('hidden');
@@ -50,12 +62,9 @@ btnDiceRoll.addEventListener('click', function () {
   // Se o dado for 1, muda de player e reseta os pontos
   if (diceNumber === 1) {
     activePlayer.currentScore = 0;
-    activePlayer.querySelector('.current-score').textContent =
-      activePlayer.currentScore;
-    changePlayer();
-  } else {
-    currentScore += diceNumber;
 
+    switchPlayer();
+  } else {
     activePlayer.currentScore += diceNumber;
     activePlayer.querySelector('.current-score').textContent =
       activePlayer.currentScore;
@@ -63,16 +72,24 @@ btnDiceRoll.addEventListener('click', function () {
 });
 
 btnHold.addEventListener('click', function () {
-  activePlayer.score += activePlayer.currentScore;
-  activePlayer.currentScore = 0;
-  activePlayer.querySelector('.current-score').textContent =
-    activePlayer.currentScore;
+  // Se o jogo não estiver ativo, nenhum código executa após o return !
+  if (!gameActive) return;
 
+  activePlayer.score += activePlayer.currentScore;
   activePlayer.querySelector('.score').textContent = activePlayer.score;
 
-  if (activePlayer.score >= 100) {
-    alert('venceuu !');
-  }
+  activePlayer.currentScore = 0;
 
-  changePlayer();
+  if (activePlayer.score >= victoryScore) {
+    activePlayer.classList.add('player--winner');
+    activePlayer.classList.remove('player--active');
+    gameActive = false;
+    diceElement.classList.add('hidden');
+  } else {
+    switchPlayer();
+  }
+});
+
+btnNewGame.addEventListener('click', function () {
+  location.reload();
 });
